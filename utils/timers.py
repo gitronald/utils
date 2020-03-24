@@ -4,6 +4,9 @@
 import datetime
 from timeit import default_timer
 
+def isostamp():
+    return datetime.datetime.utcnow().isoformat()
+
 def now(fmt="%Y-%m-%d %H:%M:%S"):
     return datetime.datetime.now().strftime(fmt)
 
