@@ -1,3 +1,5 @@
+__version__ = "0.0.0"
+
 # All misc tools
 from .utils import *
 
