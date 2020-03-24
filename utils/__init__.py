@@ -10,6 +10,5 @@ from . import dtables
 from . import timers
 from . import web
 from . import logger
-
-# from . import plot
-# from . import stats
+from . import plot
+from . import stats
