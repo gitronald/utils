@@ -7,7 +7,10 @@ import json
 import random
 import itertools
 import pandas as pd
+from hashlib import sha224
 from string import ascii_letters, digits
+
+from .timers import now
 
 pd.set_option('max.columns', None)  # Show all columns
 pd.set_option('max_colwidth', 70)   # Max single column width
@@ -109,6 +112,15 @@ def make_id():
 def salt_id(s, salt='saltytears_forthesultan'):
     """Generate salted ID based on input string"""
     return sha224((salt+s).encode('utf-8')).hexdigest()
+
+def str_to_id(s):
+    replace = str.maketrans({
+        " ": "_",  
+        ",": "_",  
+        "'": "",
+        '"': ""
+    })
+    return s.lower().translate(replace)
 
 def print_line(word='', length=80):
     """Print a word followed by a line to a specified length (default=80)"""
