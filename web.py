@@ -82,7 +82,8 @@ def get_domain(url):
 def start_sesh(headers=None, proxy_port=None):
     protocols = ['http', 'https']
     proxy_base = "socks5://127.0.0.1:"
-
+    
+    # Generate a requests session object
     sesh = requests.Session()
 
     if headers: # Add headers to all requests
@@ -181,3 +182,47 @@ def extract_html_json(data_fp, extract_to, id_col):
         fp = os.path.join(extract_to, row[id_col] + '.html') 
         with open(fp, 'wb') as outfile:
             outfile.write(row['html'])
+
+# Sessions ---------------------------------------------------------------------
+
+def get_sessions(user, tvar='unixtime', session_delimiter=30*60):
+    """Add browsing session based on time delimiter
+    
+    Arguments:
+        user {pd.DataFrame} -- Dataframe for a single user
+    
+    Keyword Arguments:
+        tvar {str} -- Time stamp column to use (default: {'unixtime'})
+        session_delimiter {int} -- idle threshold in seconds (default: {30*60})
+    
+    Returns:
+        pd.DataFrame -- Dataframe with added session columns
+    """
+    
+    # Sort by visit time, calculate time diff
+    user = user.sort_values(tvar).reset_index(drop=True)
+    user['time_diff'] = user[tvar].diff()
+    
+    # Reset index to get ordered int, cut on index if time from last action 
+    # greater than set delimiter
+    user = user.reset_index()
+    user['bool_sesh'] = user.time_diff.dt.total_seconds() > session_delimiter
+    # print(f'Number of search sessions: {user["bool_sesh"].sum()}')
+
+    # Set cut points, include max and min manually as np.inf
+    session_cut_points = [idx for idx, b in user['bool_sesh'].items() if b]
+    session_cut_points = [-pd.np.inf] + session_cut_points + [pd.np.inf]
+    
+    # Make the cuts
+    user['session'] = pd.cut(user['index'], bins=session_cut_points, right=False, labels=False)
+
+    # Mark session index (i.e. subunits)
+    user['session_idx'] = user.groupby(
+        (user['session'] != user['session'].shift(1)).cumsum()
+    ).cumcount() + 1
+
+    # Remove process variables
+    del user['index']
+    del user['bool_sesh']
+    return user
+

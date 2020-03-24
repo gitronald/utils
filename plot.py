@@ -26,23 +26,24 @@ plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 
 def remove_yaxis_ticks(ax, major=True, minor=True):
-    """Completely remove all y axis tick marks"""
     if major:
         for tic in ax.yaxis.get_major_ticks():
-            tic.tick1On = tic.tick2On = False
+            tic.tick1line.set_visible(False)
+            tic.tick2line.set_visible(False)
     if minor:
         for tic in ax.yaxis.get_minor_ticks():
-            tic.tick1On = tic.tick2On = False
-
+            tic.tick1line.set_visible(False)
+            tic.tick2line.set_visible(False)
 
 def remove_xaxis_ticks(ax, major=True, minor=True):
-    """Completely remove all x axis tick marks"""
     if major:
         for tic in ax.xaxis.get_major_ticks():
-            tic.tick1On = tic.tick2On = False
+            tic.tick1line.set_visible(False)
+            tic.tick2line.set_visible(False)
     if minor:
         for tic in ax.xaxis.get_minor_ticks():
-            tic.tick1On = tic.tick2On = False
+            tic.tick1line.set_visible(False)
+            tic.tick2line.set_visible(False)
 
 
 def get_binning(values, num_bins = 15, log_binning = True, is_pmf = True):
