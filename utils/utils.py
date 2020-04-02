@@ -126,7 +126,11 @@ def alphanumerics():
 def random_string(length=12):
     """Generate a random string of alphanumerics"""
     return ''.join(random.choice(alphanumerics()) for i in range(length))
-    
+
+def hash_id(s): 
+    """Generate hash ID based on decoded string input"""
+    return sha224(s.encode('utf-8')).hexdigest()
+
 def make_id():
     """Generate hash ID based on current datetime"""
     return sha224(now().encode('utf-8')).hexdigest()
