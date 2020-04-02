@@ -3,6 +3,7 @@
 
 import os
 import re
+import bz2
 import json
 import random
 import itertools
@@ -44,29 +45,31 @@ def humanbytes(size):
 
 def read_lines(fp, max_line=10**7, as_dataframe=False):
 
-    if '.csv' in fp:
+    if fp.endswith('.csv'):
         return pd.read_csv(fp)
 
-    elif '.tsv' in fp:
+    elif fp.endswith('.tsv'):
         return pd.read_csv(fp, sep='\t')
 
-    elif '.txt' in fp:
+    elif fp.endswith('.txt'):
         with open(fp, 'r') as infile:
             lines = [l.strip() for n, l in enumerate(infile) if n < max_line]
             return pd.DataFrame(lines) if as_dataframe else lines
 
-    elif '.json' in fp:
+    elif fp.endswith('.json'):
         with open(fp, 'r') as infile:
             lines = [json.loads(l.strip()) for n, l in enumerate(infile) \
                      if n < max_line]
             return pd.DataFrame(lines) if as_dataframe else lines
+
+    elif fp.endswith('.json.bz2'):
+        with bz2.open(filename, "rt") as infile:
+            lines = [json.loads(l.strip()) for n, l in enumerate(infile) \
+                     if n < max_line]
     
     else:
         raise ValueError('Filepath not recognized')
-        
-
-            
-        
+                
 
 def write_lines(iter_data, fp, fmode='a+', verbose=False):
     with open(fp, fmode) as outfile:
