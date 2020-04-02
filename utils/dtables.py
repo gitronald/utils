@@ -1,6 +1,7 @@
 """ dtables : The python version of the R package dtables
 """
 
+from . import utils
 import pandas as pd
 
 def neat_n(n): return f'{n:,}'
@@ -73,6 +74,19 @@ def presentation_table(df):
         if c.startswith('mean_'):
             df[c] = df[c].apply(lambda n: f'{n:.3f}')
     return df
+
+def get_column_unique(fp, col):
+    if os.path.exists(fp):
+        try:
+            df = utils.read_lines(fp, as_dataframe=True)
+            data = set(df[id_col].unique())
+        except Exception as error:
+            print("Error loading dataframe", error)
+    else:
+        data = {}
+    
+    print(f"Unique [{fp}|{col}]: {len(data):,}")
+    return data
 
 # Descriptive Stats ------------------------------------------------------------
 
