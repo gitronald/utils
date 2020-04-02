@@ -58,8 +58,9 @@ class Logger(object):
                 'propagate': True
             },
             # External loggers
-            'requests': {'level': 'WARNING'},
             'urllib3': {'level': 'WARNING'},
+            'requests': {'level': 'WARNING'},
+            'matplotlib': {'level': 'WARNING'},
             'chardet.charsetprober': {'level': 'INFO'},
             'parso': {'level': 'INFO'} # Fix for ipython autocomplete bug
         }
