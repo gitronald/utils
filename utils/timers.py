@@ -27,3 +27,14 @@ def get_time_range(col):
     end = col.max().strftime('%B %d, %Y')
     window = (col.max() - col.min()).days
     return start, end, window
+
+def seconds_to_clock(secs):
+    """ Convert time in seconds to "HH:MM:SS" clock format
+    
+    Arguments:
+        secs {float} -- Time in seconds
+    
+    Returns:
+        str -- The clock formatted version of the seconds input
+    """
+    return f"{str(datetime.timedelta(seconds=secs))}"
