@@ -42,12 +42,31 @@ def humanbytes(size):
 
 # Data ------------------------------------------------------------------------
 
-def read_lines(fp, max_line=10**7):
-    with open(fp, 'r') as infile:
-        if '.txt' in fp:
-            return [l.strip() for n, l in enumerate(infile) if n < max_line]
-        elif '.json' in fp:
-            return [json.loads(l.strip()) for n, l in enumerate(infile) if n < max_line]
+def read_lines(fp, max_line=10**7, as_dataframe=False):
+
+    if '.csv' in fp:
+        return pd.read_csv(fp)
+
+    elif '.tsv' in fp:
+        return pd.read_csv(fp, sep='\t')
+
+    elif '.txt' in fp:
+        with open(fp, 'r') as infile:
+            lines = [l.strip() for n, l in enumerate(infile) if n < max_line]
+            return pd.DataFrame(lines) if as_dataframe else lines
+
+    elif '.json' in fp:
+        with open(fp, 'r') as infile:
+            lines = [json.loads(l.strip()) for n, l in enumerate(infile) \
+                     if n < max_line]
+            return pd.DataFrame(lines) if as_dataframe else lines
+    
+    else:
+        raise ValueError('Filepath not recognized')
+        
+
+            
+        
 
 def write_lines(iter_data, fp, fmode='a+', verbose=False):
     with open(fp, fmode) as outfile:
