@@ -24,6 +24,46 @@ plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
 plt.rc('legend', fontsize=TINY_SIZE)    # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
+# Seaborn Keyword Args ---------------------------------------------------------
+
+strip_kws = dict(
+    jitter=True, 
+    size=1.5, 
+    alpha=0.7
+)
+
+box_kws = dict(
+    linewidth=0.75, 
+    color='whitesmoke', 
+    width=.5, 
+    fliersize=0
+)
+
+pointplot_kws = dict(
+    scale=0.5,
+    alpha=0.8,
+    errwidth=1,
+    dodge=0.2
+)
+
+heatmap_kws_proportion = dict(
+    annot=True,
+    annot_kws={'size':8}, fmt='.2f',
+    cmap='bone_r',
+    cbar=True,
+    cbar_kws={
+        'label': '',
+        'orientation': 'vertical',
+        'pad': 0.01,
+        'shrink': 1,
+        'ticks': [0, 1],
+        'format': '%.1f'
+    },
+    linewidths=0.1,
+    linecolor='whitesmoke',
+    vmax=1,
+    vmin=0
+)
 
 def remove_yaxis_ticks(ax, major=True, minor=True):
     if major:
