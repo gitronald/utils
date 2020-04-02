@@ -81,7 +81,7 @@ def get_column_unique(fp, col):
     if os.path.exists(fp):
         try:
             df = utils.read_lines(fp, as_dataframe=True)
-            data = set(df[id_col].unique())
+            data = set(df[col].unique())
         except Exception as error:
             print("Error loading dataframe", error)
     else:
