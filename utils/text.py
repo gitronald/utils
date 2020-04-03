@@ -1,6 +1,7 @@
 """ text : A useful collection of tools for handling text data
 """
 
+import re
 import pandas as pd
 from jellyfish import damerau_levenshtein_distance as dl_distance
 from itertools import combinations
@@ -14,6 +15,14 @@ def multi_remove(s, remove_list=[]):
     for remove in remove_list:
         s = s.replace(remove, '').strip()
     return s
+
+def num_words(string, list_words=False):
+    # Number of words in a string
+    string = str(string) if type(string) != str else string
+    words = re.findall(r'\w+', string)
+    nwords = len(words)
+    data1 = (nwords, words) if list_words else nwords
+    return data1
 
 def score_token(token, lex): 
     return lex[token] if token in lex else pd.np.nan
