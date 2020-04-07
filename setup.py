@@ -28,9 +28,10 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     install_requires=[
         'pandas', 'numpy', 
-        'scipy', 'statsmodels',
-        'requests', 'lxml', 'bs4',
-        'tldextract','emoji',
+        'scipy', 'statsmodels', 
+        'requests', 'brotli' 
+        'lxml', 'bs4', 'emoji',
+        'tldextract',
         'jellyfish', 
         'seaborn'
     ],

@@ -4,7 +4,7 @@ __version__ = "0.0.4"
 from .utils import *
 
 # Descriptive frequencies table
-from .dtables import dft
+from .dtables import dft, describe
 
 # Other packages
 from . import rankings
