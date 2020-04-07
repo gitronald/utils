@@ -29,7 +29,7 @@ setuptools.setup(
     install_requires=[
         'pandas', 'numpy', 
         'scipy', 'statsmodels', 
-        'requests', 'brotli' 
+        'requests', 'brotli',
         'lxml', 'bs4', 'emoji',
         'tldextract',
         'jellyfish', 
