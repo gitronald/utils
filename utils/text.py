@@ -8,6 +8,12 @@ from itertools import combinations
 from nltk import word_tokenize 
 from nltk.util import ngrams
 
+def get_words(string):
+    # Number of words in a string
+    string = str(string) if type(string) != str else string
+    words = re.findall(r'\w+', string)
+    return words
+
 def get_ngrams(sentence, n=2):
     return ['_'.join(gram) for gram in ngrams(word_tokenize(sentence), n)]
 
