@@ -146,6 +146,55 @@ def set_share_axes(axs, target=None, sharex=False, sharey=False):
 
 # Plots -----------------------------------------------------------------------
 
+def quad_plot(data, xlist, ylist, label_colors, label_order):
+    """ Quad plot: Each column shares x axis, each row shares y axis
+    """
+
+    strip_kws = dict(jitter=True, size=1.75, alpha=0.7)
+    box_kws = dict(linewidth=0.75, color='whitesmoke', width=.5, fliersize=0)
+
+    gridspec_kw={'height_ratios':[1,2.2]}
+    fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(8,3), 
+                           gridspec_kw=gridspec_kw)
+
+    # Separate shared axes
+    set_share_axes(axs[:,0], sharex=True)
+    set_share_axes(axs[:,1], sharex=True)
+    set_share_axes(axs[0,:], sharey=True)
+    set_share_axes(axs[1,:], sharey=True)
+
+    for yidx, y in enumerate(ylist): # Each fig column
+        for xidx, x in enumerate(xlist): # Each fig row 
+        
+            ax = axs[xidx, yidx]
+            sns.boxplot(y=x, x=y, data=data, ax=ax, **box_kws)
+            sns.stripplot(y=x, x=y, data=data, ax=ax,
+                        palette=label_colors[x],
+                        order=label_order[x], 
+                        **strip_kws)
+
+            if xidx != len(xlist) - 1:
+                # Remove xtick marks until last row
+                remove_xaxis_ticks(ax)
+                ax.tick_params(bottom=False, labelbottom=False)
+                ax.set(xlabel='')
+
+            if yidx != 0:
+                # Remove xtick marks until last row
+                remove_yaxis_ticks(ax)
+                ax.tick_params(left=False, labelleft=False)
+                ax.set(ylabel='')
+
+    # Styling
+    for idx, ax in enumerate(axs.flatten()):
+        ax.grid(b=True, axis='x', which='major', color='#E7E8E8', linestyle='--', linewidth=0.5)
+        for spine in ['top', 'right']:
+            ax.spines[spine].set_visible(False)
+            if idx in [0, 1]:
+                ax.spines['bottom'].set_visible(False)
+    
+    return fig, axs
+
 def plot_bias_distribution(dist, ax, color='#3B3838', label='',
                            linestyle='-', alpha=1, shade=True):
     ax = sns.kdeplot(dist, color=color, shade=False, alpha=alpha,
