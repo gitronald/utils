@@ -29,11 +29,11 @@ setuptools.setup(
     install_requires=[
         'pandas', 'numpy', 
         'scipy', 'statsmodels', 
-        'requests', 'brotli',
         'lxml', 'bs4', 'emoji',
-        'tldextract',
+        'requests', 'brotli', 'tldextract',
+        'matplotlib', 'seaborn',
+        'networkx',
         'jellyfish', 
-        'seaborn'
     ],
     python_requires='>=3.6'
 )
