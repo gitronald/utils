@@ -9,6 +9,33 @@ from statsmodels.stats.proportion import proportions_ztest
 from statsmodels.sandbox.stats.multicomp import multipletests
 from collections import OrderedDict
 
+from . import dtables
+from . import utils
+
+def kruskal_test_multi(data, metrics, groups, details=True):
+    
+    for metric in metrics:
+        all_df = describe(data[metric])
+        s = f"Mean {metric}: {all_df['mean']:,.1f} (SD = {all_df['std']:,.1f})"
+        print(s)
+
+        for group in groups:
+
+            utils.print_line()
+            print(f'Group: {group}')
+            print(f'Metric: {metric}')
+
+            if details:
+                tab = data.groupby(group)[metric]\
+                        .apply(dtables.describe)\
+                        .unstack().round(3)
+                print(f'{tab}\n')
+
+            X, p = kruskal_test(data, group=group, metric=metric, 
+                                fmt=True, nan_policy='omit')
+            print(f'Krusukal-Wallis [KW] $X^{2} = {X}$; $P = {p}$)')
+            print()
+
 def paired_ttest(df, var1, var2, root='all', date=''):
     """Paired T-test on two columns in a pd.DataFrame"""
     overall = {}
@@ -31,24 +58,24 @@ def get_median_category(df, group, category):
     df = df.groupby(group)[category].apply(lambda x: x.value_counts()[:1]).reset_index()
     return df.set_index(group).drop(category, axis=1).rename(columns={'level_1':'category'}).reset_index()
 
-def kruskal_test(df, group, metric, fmt=True):
-    groups = {key:value for key, value in df.groupby(group)[metric]}
-    X, p = st.kruskal(*groups.values())
+def kruskal_test(data, group, metric, fmt=False, nan_policy='raise'):
+    groups = {key:value for key, value in data.groupby(group)[metric]}
+    X, p = st.kruskal(*groups.values(), nan_policy=nan_policy)
     if fmt:
         return '{:.3f}'.format(X), '{:.4f}'.format(p) #p_value_sig(p)
     else:
         return {'chi':X, 'p':p} 
 
-def mannw_test(df, group, metric, fmt=True):
-    groups = {key:value for key, value in df.groupby(group)[metric]}
+def mannw_test(data, group, metric, fmt=False):
+    groups = {key:value for key, value in data.groupby(group)[metric]}
     U, p = st.mannwhitneyu(*groups.values())
     if fmt:
         return '{:.3f}'.format(U), '{:.4f}'.format(p) #p_value_sig(p)
     else:
         return {'U':U, 'P':p}
 
-def spearmanr(df, metric1, metric2, nan_policy='omit', fmt=False):
-    rho, p = st.spearmanr(df[metric1], df[metric2], nan_policy=nan_policy)
+def spearmanr(data, metric1, metric2, fmt=False, nan_policy='omit'):
+    rho, p = st.spearmanr(data[metric1], data[metric2], nan_policy=nan_policy)
     if fmt:
         return metric1, metric2, '{:.3f}'.format(rho), p_value_sig(p)
     else:
@@ -58,11 +85,16 @@ def nonparametric_sig_test(data, group, metric):
     groups = {key:value for key, value in data.groupby(group)[metric]}
     ngroups = len(groups.keys())
     if ngroups == 2:
-        U, p = mannw_test(df, group, metric)
-        out_data = OrderedDict([('group',idx), ('U',U), ('p',p)])
+        data = mannw_test(df, group, metric)
+        out_data = OrderedDict([
+            ('group', group), ('U', data['U']), ('p', data['p'])
+        ])
+        
     else:
-        X, p = kruskal_test(df, group, metric)
-        out_data = OrderedDict([('group',idx), ('chi',X), ('p',p)])
+        data = kruskal_test(df, group, metric)
+        out_data = OrderedDict([
+            ('group',idx), ('chi', data['X']), ('p', data['p'])
+        ])
     return out_data
 
 def mcnemar_test(data, group1, group2):
