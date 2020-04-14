@@ -2,6 +2,7 @@
 """
 
 import re
+import numpy as np
 import pandas as pd
 from jellyfish import damerau_levenshtein_distance as dl_distance
 from itertools import combinations
@@ -53,7 +54,7 @@ def score_sentence(sent, lex, return_mean=True):
     score_dict.update(unigram_scores)
     if return_mean:
         scores = list(score_dict.values())
-        return pd.np.mean(scores) if scores else None
+        return np.mean(scores) if scores else None
     else:
         return score_dict
 
@@ -61,7 +62,7 @@ def score_bigrams(sent, lex):
     # Get all bigrams in lexicon
     bigrams = get_ngrams(sent, n=2)
     scores = score_tokens(bigrams, lex=lex)
-    return pd.np.mean(list(scores.values()))
+    return np.mean(list(scores.values()))
 
 def get_score_direction(s, thresh=0):
     if s is None: return None
@@ -73,7 +74,7 @@ def get_dl_variance(str_list):
     """Get average Damerau-Levenshtein Distance
     """
     all_pairs = [(s1, s2) for s1, s2 in combinations(str_list, 2) if str_list.any()]
-    return pd.np.mean([dl_distance(s1, s2) for s1, s2 in all_pairs])
+    return np.mean([dl_distance(s1, s2) for s1, s2 in all_pairs])
 
 def get_email_address(s):
     # https://zapier.com/blog/extract-links-email-phone-regex/
