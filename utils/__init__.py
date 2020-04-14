@@ -6,6 +6,8 @@ from .utils import *
 # Descriptive frequencies table
 from .dtables import dft, describe
 
+from .timers import now, start_timer, stop_timer
+
 # Other packages
 from . import networks
 from . import rankings
