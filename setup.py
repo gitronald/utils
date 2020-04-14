@@ -32,8 +32,8 @@ setuptools.setup(
         'lxml', 'bs4', 'emoji',
         'requests', 'brotli', 'tldextract',
         'matplotlib', 'seaborn',
-        'networkx',
-        'jellyfish', 
+        'nltk', 'jellyfish', 
+        'networkx', 
     ],
     python_requires='>=3.6'
 )
