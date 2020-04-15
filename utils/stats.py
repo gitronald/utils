@@ -15,7 +15,7 @@ from . import utils
 def kruskal_test_multi(data, metrics, groups, details=True):
     
     for metric in metrics:
-        all_df = describe(data[metric])
+        all_df = dtables.describe(data[metric])
         s = f"Mean {metric}: {all_df['mean']:,.1f} (SD = {all_df['std']:,.1f})"
         print(s)
 
