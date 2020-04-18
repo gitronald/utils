@@ -167,11 +167,13 @@ def quad_plot(data, xlist, ylist, label_colors, label_order):
         for xidx, x in enumerate(xlist): # Each fig row 
         
             ax = axs[xidx, yidx]
-            sns.boxplot(y=x, x=y, data=data, ax=ax, **box_kws)
-            sns.stripplot(y=x, x=y, data=data, ax=ax,
-                        palette=label_colors[x],
+            sns.boxplot(y=x, x=y, data=data, ax=ax, 
                         order=label_order[x], 
-                        **strip_kws)
+                        **box_kws)
+            sns.stripplot(y=x, x=y, data=data, ax=ax,
+                          palette=label_colors[x],
+                          order=label_order[x], 
+                          **strip_kws)
 
             if xidx != len(xlist) - 1:
                 # Remove xtick marks until last row
