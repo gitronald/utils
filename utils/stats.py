@@ -64,7 +64,7 @@ def kruskal_test(data, group, metric, fmt=False, nan_policy='raise'):
     if fmt:
         return '{:.3f}'.format(X), '{:.4f}'.format(p) #p_value_sig(p)
     else:
-        return {'chi':X, 'p':p} 
+        return {'chi':X, 'P':p} 
 
 def mannw_test(data, group, metric, fmt=False):
     groups = {key:value for key, value in data.groupby(group)[metric]}
