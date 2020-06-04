@@ -13,7 +13,7 @@ description, long_description = get_readme_descriptions()
 
 setuptools.setup(
     name='utils',
-    version='0.1.1',
+    version='0.1.2',
     url='http://github.com/gitronald/utils',
     author='Ronald E. Robertson',
     author_email='rer@ccs.neu.edu',
