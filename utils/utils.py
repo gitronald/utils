@@ -43,26 +43,26 @@ def humanbytes(size):
 
 # Data ------------------------------------------------------------------------
 
-def read_lines(fp, max_line=10**7, as_dataframe=False):
+def read_lines(fp, max_line=10**7, as_dataframe=False, filetype):
 
-    if fp.endswith('.csv'):
+    if fp.endswith('.csv') or filetype == 'csv':
         return pd.read_csv(fp)
 
-    elif fp.endswith('.tsv'):
+    elif fp.endswith('.tsv')  or filetype == 'tsv':
         return pd.read_csv(fp, sep='\t')
 
-    elif fp.endswith('.txt'):
+    elif fp.endswith('.txt') or filetype == 'txt':
         with open(fp, 'r') as infile:
             lines = [l.strip() for n, l in enumerate(infile) if n < max_line]
             return pd.DataFrame(lines) if as_dataframe else lines
 
-    elif fp.endswith('.json'):
+    elif fp.endswith('.json') or filetype == 'json':
         with open(fp, 'r') as infile:
             lines = [json.loads(l.strip()) for n, l in enumerate(infile) \
                      if n < max_line]
             return pd.DataFrame(lines) if as_dataframe else lines
 
-    elif fp.endswith('.json.bz2'):
+    elif fp.endswith('.json.bz2')  or filetype == 'json.bz2':
         with bz2.open(filename, "rt") as infile:
             lines = [json.loads(l.strip()) for n, l in enumerate(infile) \
                      if n < max_line]
