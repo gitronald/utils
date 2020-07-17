@@ -122,7 +122,7 @@ def df_types(df, thresh=0, perc=True):
     types_binary = types.apply(lambda col: col.apply(lambda r: r > 0), axis=1)
     types['n_types'] = types_binary.sum(axis=1)
     
-    types['type'] = main_types.apply(lambda col: col[col].index.item(), axis=1)
+    types['type'] = main_types.apply(lambda col: col[col].index.iloc[0], axis=1)
 
     return types
 
