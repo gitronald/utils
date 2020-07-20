@@ -82,13 +82,16 @@ def write_lines(iter_data, fp, fmode='a+', verbose=False):
                 outfile.write(f'{json.dumps(data)}\n')
 
 def read_tsv(fp):
+    """Read a TSV to dataframe"""
     return pd.read_csv(fp, sep='\t')
 
 def write_tsv(df, fp, index=False, verbose=False):
+    """Write a dataframe to a TSV"""
     if verbose: print(fp)
     return df.to_csv(fp, sep='\t', index=index)
 
 def read_json(fp):
+    """Read in a json file (not lines)"""
     with open(fp, 'r') as infile:
         return json.load(infile)
 
