@@ -81,12 +81,16 @@ def write_lines(iter_data, fp, fmode='a+', verbose=False):
             for data in iter_data:
                 outfile.write(f'{json.dumps(data)}\n')
 
-def read_tsv(FP):
-    return pd.read_csv(FP, sep='\t')
+def read_tsv(fp):
+    return pd.read_csv(fp, sep='\t')
 
 def write_tsv(df, fp, index=False, verbose=False):
     if verbose: print(fp)
     return df.to_csv(fp, sep='\t', index=index)
+
+def read_json(fp):
+    with open(fp, 'r') as infile:
+        return json.load(infile)
 
 # Lists ------------------------------------------------------------------------
 
