@@ -12,6 +12,9 @@ from collections import OrderedDict
 from . import dtables
 from . import utils
 
+def get_nonzero_min(df, col):
+    return df[df[col] > 0][col].min() # Nonzero min
+
 def kruskal_test_multi(data, metrics, groups, details=True):
     
     for metric in metrics:
