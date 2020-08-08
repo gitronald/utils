@@ -32,7 +32,7 @@ def num_words(string, list_words=False):
     return data1
 
 def score_token(token, lex): 
-    return lex[token] if token in lex else pd.np.nan
+    return lex[token] if token in lex else np.nan
 
 def score_tokens(tokens, lex):
     return {t:score_token(t, lex=lex) for t in tokens if t in lex}

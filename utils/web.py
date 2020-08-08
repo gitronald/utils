@@ -13,6 +13,7 @@ import requests
 import subprocess
 import tldextract
 import pandas as pd
+import numpy as np
 from bs4 import BeautifulSoup
 from urllib import parse
 
@@ -211,7 +212,7 @@ def get_sessions(user, tvar='unixtime', session_delimiter=30*60):
 
     # Set cut points, include max and min manually as np.inf
     session_cut_points = [idx for idx, b in user['bool_sesh'].items() if b]
-    session_cut_points = [-pd.np.inf] + session_cut_points + [pd.np.inf]
+    session_cut_points = [-np.inf] + session_cut_points + [np.inf]
     
     # Make the cuts
     user['session'] = pd.cut(user['index'], bins=session_cut_points, right=False, labels=False)

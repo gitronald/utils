@@ -5,6 +5,7 @@ from . import utils
 
 import os
 import pandas as pd
+import numpy as np
 
 def neat_n(n): return f'{n:,}'
 def neat_p(p): return f'{round(p*100, 1)}%' if pd.notnull(p) else '-'
@@ -57,7 +58,7 @@ def dnum(df_col, rnd=3):
     if df_col.dtype in [int, float]:
         return df_col.describe().round(rnd).to_frame().T
     else:
-        return pd.np.nan
+        return np.nan
 
 def presentation_table(df):
     """Make a dataframe more presentable
