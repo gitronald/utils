@@ -22,6 +22,20 @@ def stop_timer(start, v=False):
     if v: print(f"Run time:\t{runtime}\n")
     return f'{runtime}'
 
+def get_diff_days(start, end):
+    """Get difference between datetimes in days with decimal
+
+    Args:
+        start (pd.Series): an array of datetime strings
+        end (pd.Series): an array of datetime strings
+
+    Returns:
+        pd.Series: The difference as a float
+    """
+    tdelta = pd.to_datetime(end) - pd.to_datetime(start)
+    total_days = tdelta.dt.round(freq='d').dt.days
+    return total_days + tdelta.dt.seconds / 60 / 60 / 24
+
 def get_time_range(col):
     start = col.min().strftime('%B %d, %Y')
     end = col.max().strftime('%B %d, %Y')
