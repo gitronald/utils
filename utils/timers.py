@@ -2,6 +2,7 @@
 """
 
 import datetime
+import pandas as pd
 from timeit import default_timer
 
 def isostamp():
