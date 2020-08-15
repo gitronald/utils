@@ -186,7 +186,15 @@ def extract_html_json(data_fp, extract_to, id_col):
 
 # Sessions ---------------------------------------------------------------------
 
-def get_sessions(user, tvar='unixtime', session_delimiter=30*60):
+def get_sequential_duplicates(series): 
+    """Returns a boolean indicating if previous entry has same value"""
+    return series.shift() == series
+
+def get_interrow_interval(series):
+    """Returns the time difference between datetime entries in seconds"""
+    return series.diff().dt.total_seconds()
+
+def get_sessions(user, tvar='unixtime', dupe_col='', session_delimiter=30*60):
     """Add browsing session based on time delimiter
     
     Arguments:
@@ -194,6 +202,7 @@ def get_sessions(user, tvar='unixtime', session_delimiter=30*60):
     
     Keyword Arguments:
         tvar {str} -- Time stamp column to use (default: {'unixtime'})
+        dupe_col {str} -- Optional, column to check for sequential duplicates
         session_delimiter {int} -- idle threshold in seconds (default: {30*60})
     
     Returns:
@@ -202,12 +211,16 @@ def get_sessions(user, tvar='unixtime', session_delimiter=30*60):
     
     # Sort by visit time, calculate time diff
     user = user.sort_values(tvar).reset_index(drop=True)
-    user['time_diff'] = user[tvar].diff()
+    user['time_diff'] = get_interrow_interval(user[tvar])
+
+    # Add sequential duplicates
+    if dupe_col:
+        user['seq_dupe'] = get_sequential_duplicates(user[dupe_col])
     
     # Reset index to get ordered int, cut on index if time from last action 
     # greater than set delimiter
     user = user.reset_index()
-    user['bool_sesh'] = user.time_diff.dt.total_seconds() > session_delimiter
+    user['bool_sesh'] = user.time_diff > session_delimiter
     # print(f'Number of search sessions: {user["bool_sesh"].sum()}')
 
     # Set cut points, include max and min manually as np.inf
@@ -215,7 +228,8 @@ def get_sessions(user, tvar='unixtime', session_delimiter=30*60):
     session_cut_points = [-np.inf] + session_cut_points + [np.inf]
     
     # Make the cuts
-    user['session'] = pd.cut(user['index'], bins=session_cut_points, right=False, labels=False)
+    user['session'] = pd.cut(user['index'], bins=session_cut_points,
+                             right=False, labels=False)
 
     # Mark session index (i.e. subunits)
     user['session_idx'] = user.groupby(
@@ -225,5 +239,6 @@ def get_sessions(user, tvar='unixtime', session_delimiter=30*60):
     # Remove process variables
     del user['index']
     del user['bool_sesh']
+
     return user
 
