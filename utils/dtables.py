@@ -109,6 +109,19 @@ def groupby_value_counts(gdf, col, add_prefix=True):
     count_df.columns = colnames
     return count_df.fillna(0).astype(int).reset_index()
 
+def get_masked_nunique(df, mask, unique):
+    """ Get the number of unique values in a masked dataframe column
+
+    Args:
+        df (pd.DataFrame): The dataframe to operate on.
+        mask (str): The mask column name.
+        unique (str): The unique values column name.
+
+    Returns:
+        int: count of the unique values in the masked column
+    """
+    return 0 if not df[mask].any() else df[df[mask] == 1][unique].nunique()
+
 
 def df_types(df, thresh=0, perc=True):
     # Get dtype of every cell in a column, not a fast operation
