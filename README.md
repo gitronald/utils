@@ -1,6 +1,10 @@
 # utils 0.1.6
 
-Utilities, obviously.
+Utilities, obviously. 
+
+Here lie a bunch of utilities for general purpose and fairly specific tasks that I frequently come across while wrangling and analyzing data. I find it extremely useful to be able to quickly install this package via `pip install --upgrade git+https://github.com/gitronald/utils` and have these functions at my fingertips instead of rewriting them, or copy and pasting them into every project I work on.
+
+Someday I might better document these functions, but let's be real, probably not. For people that aren't me, this is probably best used as a template from which you can create your own utils package. There are a ton of benefits to having a centralized repo for your utils, and I highly recommend it.  I tend to use the `utils`, `dtables`, and `timers` - which contain more general purpose functions, like writing json lines to a file - the most. The `logger` module also has a useful template for creating a custom logger for ongoing data collection tasks, which in my experience isn't that easy to come across. Other than that, who knows what's in here. Goodluck!
 
 ## dtables
 
@@ -72,20 +76,3 @@ except Exception as e:
     log.exception('a')
 ```
 
----  
-## License
-
-Copyright (C) 2016-2020 Ronald E. Robertson <ronaldrobertson42@gmail.com>
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
