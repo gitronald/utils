@@ -36,6 +36,9 @@ def load_soup(fp, zipped=False):
 
 # URLs -------------------------------------------------------------------------
 
+def join_url_quote(quote_dict):
+    return '&'.join([f'{k}={v}' for k, v in quote_dict.items()])
+
 def parse_url_query(query):
     return {f'qs_{k}': '|'.join(q) for k, q in parse.parse_qs(query).items()}
 
