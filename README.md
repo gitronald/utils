@@ -1,4 +1,4 @@
-# utils 0.1.5
+# utils 0.1.6
 
 Utilities, obviously.
 
