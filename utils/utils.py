@@ -43,7 +43,7 @@ def humanbytes(size):
 
 # Data ------------------------------------------------------------------------
 
-def read_lines(fp, max_line=10**7, as_dataframe=False, filetype=''):
+def read_lines(fp, max_line=1e12, as_dataframe=False, filetype=''):
 
     if fp.endswith('.csv') or filetype == 'csv':
         return pd.read_csv(fp)
