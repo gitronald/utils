@@ -192,7 +192,7 @@ def extract_html_json(data_fp, extract_to, id_col):
 def get_sequential_duplicates(series): 
     """Returns a boolean indicating if previous entry has same value"""
     boolean = series.shift() == series
-    return boolean if type(series) == pd.Series else boolean.any(axis=1)
+    return boolean if type(series) == pd.Series else boolean.all(axis=1)
 
 def get_interrow_interval(series):
     """Returns the time difference between datetime entries in seconds"""
