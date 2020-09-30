@@ -61,7 +61,8 @@ class Logger(object):
             'urllib3': {'level': 'WARNING'},
             'requests': {'level': 'WARNING'},
             'matplotlib': {'level': 'WARNING'},
-            'googleapiclient.discovery': {'level': 'WARNING'},
+            'googleapiclient.discovery': {'level': 'ERROR'},
+            'googleapiclient.discovery_cache': {'level': 'ERROR'},
             'chardet.charsetprober': {'level': 'INFO'},
             'parso': {'level': 'INFO'} # Fix for ipython autocomplete bug
         }
