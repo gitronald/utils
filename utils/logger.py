@@ -63,6 +63,7 @@ class Logger(object):
             'matplotlib': {'level': 'WARNING'},
             'googleapiclient.discovery': {'level': 'ERROR'},
             'googleapiclient.discovery_cache': {'level': 'ERROR'},
+            'asyncio': {'level': 'INFO'},
             'chardet.charsetprober': {'level': 'INFO'},
             'parso': {'level': 'INFO'} # Fix for ipython autocomplete bug
         }
