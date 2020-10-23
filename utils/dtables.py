@@ -44,7 +44,7 @@ def describe(series):
         pd.DataFrame -- A dataframe with descriptive stats
     """
     keep_cols = ['count', 'mean', 'std', 'min', 'max']
-    tab = series.describe().T[keep_cols]
+    tab = series.describe(datetime_is_numeric=True).T[keep_cols]
     try:
         tab['sem'] = series.sem()
         tab['median'] = series.median()
@@ -170,4 +170,3 @@ def df_info(df, verbose=True, type_details=True, head=1, memory_usage='deep'):
         print()
         print(columns_df)
     return (info, columns_df)
-
