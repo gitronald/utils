@@ -66,6 +66,7 @@ def read_lines(fp, max_line=1e12, as_dataframe=False, filetype=''):
         with bz2.open(fp, "rt") as infile:
             lines = [json.loads(l.strip()) for n, l in enumerate(infile) \
                      if n < max_line]
+            return pd.DataFrame(lines) if as_dataframe else lines
     
     else:
         raise ValueError('Filepath not recognized')
