@@ -63,7 +63,7 @@ def read_lines(fp, max_line=1e12, as_dataframe=False, filetype=''):
             return pd.DataFrame(lines) if as_dataframe else lines
 
     elif fp.endswith('.json.bz2')  or filetype == 'json.bz2':
-        with bz2.open(filename, "rt") as infile:
+        with bz2.open(fp, "rt") as infile:
             lines = [json.loads(l.strip()) for n, l in enumerate(infile) \
                      if n < max_line]
     
@@ -94,6 +94,21 @@ def read_json(fp):
     """Read in a json file (not lines)"""
     with open(fp, 'r') as infile:
         return json.load(infile)
+
+def write_sql_row(data, table, conn):
+    """Write a dict `data` as a row in `table` via SQL connection `conn`
+
+    Arguments:
+        data (dict) -- A dictionary to insert as a row.
+        table (str) -- The name of the table.
+        conn -- A connection to a SQL database.
+    """
+    row = pd.DataFrame(data, index=[0])
+    row.to_sql(table, con=sql_conn, index=False, if_exists='append')
+    cursor = conn.cursor()
+    columns = ', '.join("`"+str(x).replace('/','_')+"`" for x in data.keys())
+    values = ', '.join("'"+str(x).replace('/','_')+"'" for x in data.values())
+
 
 # Lists ------------------------------------------------------------------------
 
