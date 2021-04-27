@@ -240,6 +240,9 @@ def get_sessions(user, tvar='unixtime', dupe_col='', session_delimiter=30*60):
         (user['session'] != user['session'].shift(1)).cumsum()
     ).cumcount() + 1
 
+    # Add latency (time_diff - from session data) as time elapsed on the page
+    user['time_elapsed'] = user['time_diff'].shift(-1)
+
     # Remove process variables
     del user['index']
     del user['bool_sesh']
