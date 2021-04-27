@@ -36,7 +36,7 @@ def kruskal_test_multi(data, metrics, groups, details=True):
 
             X, p = kruskal_test(data, group=group, metric=metric, 
                                 fmt=True, nan_policy='omit')
-            print(f'Krusukal-Wallis [KW] $X^{2} = {X}$; $P = {p}$)')
+            print(f'Kruskal-Wallis [KW] $X^{2} = {X}$; $P = {p}$)')
             print()
 
 def paired_ttest(df, var1, var2, root='all', date=''):
