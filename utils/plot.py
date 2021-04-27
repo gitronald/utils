@@ -146,15 +146,17 @@ def set_share_axes(axs, target=None, sharex=False, sharey=False):
 
 # Plots -----------------------------------------------------------------------
 
-def quad_plot(data, xlist, ylist, label_colors, label_order):
+def quad_plot(data, xlist, ylist, 
+        label_colors, 
+        label_order,
+        figsize=(8,3),
+        strip_kws=strip_kws,
+        box_kws=box_kws):
     """ Quad plot: Each column shares x axis, each row shares y axis
     """
 
-    strip_kws = dict(jitter=True, size=1.75, alpha=0.7)
-    box_kws = dict(linewidth=0.75, color='whitesmoke', width=.5, fliersize=0)
-
     gridspec_kw={'height_ratios':[1,2.2]}
-    fig, axs = plt.subplots(nrows=2, ncols=2, figsize=(8,3), 
+    fig, axs = plt.subplots(nrows=2, ncols=2, figsize=figsize, 
                            gridspec_kw=gridspec_kw)
 
     # Separate shared axes
