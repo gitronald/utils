@@ -93,7 +93,7 @@ def get_column_unique(fp, col):
 
 # Descriptive Stats ------------------------------------------------------------
 
-def groupby_value_counts(gdf, col, add_prefix=True):
+def groupby_value_counts(gdf, col, add_prefix=True, dropna=True):
     """Get value counts for a column with a grouped DataFrame, e.g. by `serp_id`
     
     Args:
@@ -104,7 +104,7 @@ def groupby_value_counts(gdf, col, add_prefix=True):
         pd.DataFrame : DataFrame with value counts as `f'n_{factor}'` columns, 
         where `factor` is each unique value in the selected column.
     """
-    count_df = gdf[col].value_counts().unstack()
+    count_df = gdf[col].value_counts(dropna=dropna).unstack()
     colnames = [f"n_{c}" if add_prefix else c for c in count_df.columns]
     count_df.columns = colnames
     return count_df.fillna(0).astype(int).reset_index()
