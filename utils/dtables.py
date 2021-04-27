@@ -99,6 +99,8 @@ def groupby_value_counts(gdf, col, add_prefix=True, dropna=True):
     Args:
         gdf (groupby): A dataframe grouped by a key
         col (str): The column to get value counts for
+        add_prefix (bool): Whether to use "n_{factor}" for column names
+        dropna (bool): Whether to drop nulls or not
     
     Returns:
         pd.DataFrame : DataFrame with value counts as `f'n_{factor}'` columns, 
