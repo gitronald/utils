@@ -44,7 +44,9 @@ def describe(series):
         pd.DataFrame -- A dataframe with descriptive stats
     """
     keep_cols = ['count', 'mean', 'std', 'min', 'max']
-    tab = series.describe(datetime_is_numeric=True).T[keep_cols]
+    tab = series.describe(datetime_is_numeric=True).T
+    tab = tab.reindex(keep_cols)
+    
     try:
         tab['sem'] = series.sem()
         tab['median'] = series.median()
