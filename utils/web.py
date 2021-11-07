@@ -73,9 +73,12 @@ def get_domain(url, fillna='', filter_www=True):
     """Extract a full domain from a url, drop www"""
     if pd.isnull(url): return fillna
     extracted = tldextract.extract(url)
-    if filter_www and extracted.subdomain == 'www':
-        extracted.subdomain = ''
-    components = [extracted.subdomain, extracted.domain, extracted.suffix]
+    subdomain = extracted.subdomain
+    subdomain = subdomain if filter_www and subdomain == 'www' else ''
+    domain = extracted.domain
+    suffix = extracted.suffix
+
+    components = [subdomain, domain, suffix]
     domain_str = '.'.join(filter(None, components))
     return domain_str
 
