@@ -69,11 +69,13 @@ def url_table(url):
     return pd.Series(tldextract.extract(url), index=['subdomain','domain','suffix'])
 
 
-def get_domain(url, fillna=''):
+def get_domain(url, fillna='', filter_www=True):
     """Extract a full domain from a url, drop www"""
     if pd.isnull(url): return fillna
     extracted = tldextract.extract(url)
-    components = [extracted.subdomain, extracted.domain, extracted.suffix]
+    if filter_www and extracted.subdomain = 'www':
+        subdomain = ''
+    components = [subdomain, extracted.domain, extracted.suffix]
     domain_str = '.'.join(filter(None, components))
     return domain_str
 
