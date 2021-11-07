@@ -77,6 +77,14 @@ def get_domain(url, fillna=''):
     domain_str = '.'.join(filter(None, components))
     return domain_str
 
+
+def is_ipv4(s):
+    """Check if a string is an IPv4 address"""
+    pieces = s.split('.')
+    if len(pieces) != 4: return False
+    try: return all(0<=int(p)<256 for p in pieces)
+    except ValueError: return False
+
 # Requests --------------------------------------------------------------------
 
 def start_sesh(headers=None, proxy_port=None):
