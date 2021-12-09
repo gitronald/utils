@@ -77,9 +77,9 @@ def get_domain(url, fillna='', filter_www=True):
     if filter_www:
         if subdomain == 'www':
             subdomain = ''
-        elif 'www.' in subdomain:
+        elif subdomain.startswith('www.'):
             # Handle multi subdomains (www.cruz.senate.gov')
-            subdomain = subdomain.strip('www.')
+            subdomain = subdomain[len("www."):]
     subdomain = '' if filter_www and subdomain == 'www' else subdomain
     domain = extracted.domain
     suffix = extracted.suffix
