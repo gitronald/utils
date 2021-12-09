@@ -1,4 +1,4 @@
-__version__ = "0.1.22"
+__version__ = "0.1.23"
 
 # All misc tools
 from .utils import *
