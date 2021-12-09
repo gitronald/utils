@@ -65,6 +65,7 @@ class Logger(object):
             'googleapiclient.discovery_cache': {'level': 'ERROR'},
             'asyncio': {'level': 'INFO'},
             'chardet.charsetprober': {'level': 'INFO'},
+            'filelock': {'level':'INFO'},
             'parso': {'level': 'INFO'} # Fix for ipython autocomplete bug
         }
 
