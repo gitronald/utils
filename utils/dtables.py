@@ -95,6 +95,32 @@ def get_column_unique(fp, col):
 
 # Descriptive Stats ------------------------------------------------------------
 
+
+def get_cumsum_tab(col):
+    """Get a cumulative sum table from a dataframe column
+
+    Args:
+        col (pd.Series): a column of values
+
+    Returns:
+        pd.DataFrame: dataframe containing cumulative sum of values and index
+    """
+    col = col.sort_values(ascending=False)
+    df = col.cumsum().reset_index()
+    df['n'] = range(1, col.shape[0]+1)
+    df.drop('index', axis=1, inplace=True)
+    df.columns = ['n_cumsum', 'n']
+    df['p'] = df['n'] / col.shape[0]
+    df['p_cumsum'] = df['n_cumsum'] / col.sum()
+    
+    # Get % of users accounting for 90% of cases
+    df['rounded'] = df['p_cumsum'].round(3)
+    s = df.query('rounded >= 0.899').iloc[0]
+    n_users = s['n']
+    total_users = df['n'].max()
+    
+    return df
+
 def groupby_value_counts(gdf, col, add_prefix=True, dropna=True):
     """Get value counts for a column with a grouped DataFrame, e.g. by `serp_id`
     
