@@ -37,10 +37,39 @@ def load_soup(fp, zipped=False):
 # URLs -------------------------------------------------------------------------
 
 def join_url_quote(quote_dict):
+    """Convert a dictionary into URL parameter string
+
+    Args:
+        quote_dict (dict): key-value URL parameter pairs 
+
+    Returns:
+        str: a "&" delimited string of key=value pairs
+    """
     return '&'.join([f'{k}={v}' for k, v in quote_dict.items()])
 
 def parse_url_query(query):
+    """Parse URL query string into a dict
+
+    Args:
+        query (str): a URL query string (e.g. "q=mysearch&date=2022-01-01")
+
+    Returns:
+        dict: a dictionary of URL query parameters, parameters with multiple values are concatenated with "|" under the same key.
+    """
     return {f'qs_{k}': '|'.join(q) for k, q in parse.parse_qs(query).items()}
+
+def get_query_param(url, param):
+    """Extract a specific query paramter
+
+    Args:
+        url (str): a URL string
+        param (str): a URL query parameter key
+
+    Returns:
+        str: value for inputted query parameter
+    """
+    qs = parse_url_query(url)
+    return qs[param] if param in qs else None
 
 def parse_url(url, parse_query=True):
     # Extract and shape all details from a url
@@ -220,9 +249,9 @@ def get_sessions(user, tvar='unixtime', dupe_col='', session_delimiter=30*60):
         user {pd.DataFrame} -- Dataframe for a single user
     
     Keyword Arguments:
-        tvar {str} -- Time stamp column to use (default: {'unixtime'})
-        dupe_col {str} -- Optional, column to check for sequential duplicates
-        session_delimiter {int} -- idle threshold in seconds (default: {30*60})
+        tvar (str): Time stamp column to use (default: {'unixtime'})
+        dupe_col (str): Optional, column to check for sequential duplicates
+        session_delimiter (int): idle threshold in seconds (default: {30*60})
     
     Returns:
         pd.DataFrame -- Dataframe with added session columns
@@ -263,4 +292,3 @@ def get_sessions(user, tvar='unixtime', dupe_col='', session_delimiter=30*60):
     del user['bool_sesh']
 
     return user
-
