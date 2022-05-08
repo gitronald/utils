@@ -13,10 +13,6 @@ from string import ascii_letters, digits
 
 from .timers import now
 
-pd.set_option('max.columns', None)  # Show all columns
-pd.set_option('max_colwidth', 70)   # Max single column width
-pd.set_option('display.width', 80)  # Expand display width
-
 # Files ------------------------------------------------------------------------
 
 def all_paths(dir, absolute=False):
