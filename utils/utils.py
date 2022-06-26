@@ -24,18 +24,6 @@ def all_paths(dir, absolute=False):
             file_paths.append(os.path.abspath(fp) if absolute else fp)
     return file_paths
 
-def humanbytes(size):
-    """Return the given bytes as a human friendly KB, MB, GB, or TB string
-    KB = 2**10 = 1024
-    """
-    power = 2**10
-    n = 0
-    power_name = {0 : '', 1: 'KB', 2: 'MB', 3: 'GB', 4: 'TB'}
-    while size > power:
-        size /=  power
-        n += 1
-    return f'{round(size,2)} {power_name[n]}'
-
 
 # Data ------------------------------------------------------------------------
 

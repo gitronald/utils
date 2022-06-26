@@ -84,7 +84,7 @@ def get_column_unique(fp, col):
     if os.path.exists(fp):
         try:
             df = utils.read_lines(fp, as_dataframe=True)
-            data = set(df[col].unique())
+            data = set(df[col])
         except Exception as error:
             print("Error loading dataframe", error)
     else:
@@ -112,12 +112,6 @@ def get_cumsum_tab(col):
     df.columns = ['n_cumsum', 'n']
     df['p'] = df['n'] / col.shape[0]
     df['p_cumsum'] = df['n_cumsum'] / col.sum()
-    
-    # Get % of users accounting for 90% of cases
-    df['rounded'] = df['p_cumsum'].round(3)
-    s = df.query('rounded >= 0.899').iloc[0]
-    n_users = s['n']
-    total_users = df['n'].max()
     
     return df
 
@@ -185,6 +179,19 @@ def df_columns(df, type_details=True, head=3):
 
     col_order = ['type', 'n_types', 'dtype', 'n_null', 'n_unique'] + list(range(head))
     return columns_df[col_order].sort_values('type')
+
+def humanbytes(size):
+    """Return the given bytes as a human friendly KB, MB, GB, or TB string
+    KB = 2**10 = 1024
+    """
+    power = 2**10
+    n = 0
+    power_name = {0 : '', 1: 'KB', 2: 'MB', 3: 'GB', 4: 'TB'}
+    while size > power:
+        size /=  power
+        n += 1
+    return f'{round(size,2)} {power_name[n]}'
+
 
 def df_info(df, verbose=True, type_details=True, head=1, memory_usage='deep'):
     # Get a useful header of information about a DataFrame

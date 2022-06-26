@@ -47,6 +47,7 @@ def join_url_quote(quote_dict):
     """
     return '&'.join([f'{k}={v}' for k, v in quote_dict.items()])
 
+
 def parse_url_query(query):
     """Parse URL query string into a dict
 
@@ -57,6 +58,7 @@ def parse_url_query(query):
         dict: a dictionary of URL query parameters, parameters with multiple values are concatenated with "|" under the same key.
     """
     return {f'qs_{k}': '|'.join(q) for k, q in parse.parse_qs(query).items()}
+
 
 def get_query_param(url, param):
     """Extract a specific query paramter
@@ -71,8 +73,9 @@ def get_query_param(url, param):
     qs = parse_url_query(url)
     return qs[param] if param in qs else None
 
+
 def parse_url(url, parse_query=True):
-    # Extract and shape all details from a url
+    """Extract details from a URL with optional URL query parsing"""
     parsed = parse.urlparse(url)
     parsed = { # Convert object to dict
         'scheme': parsed.scheme,
@@ -89,9 +92,11 @@ def parse_url(url, parse_query=True):
         parsed.update(qs)
     return parsed
 
+
 def url_unquote(url):
     """Unquote a URL to remove encoding"""
     return parse.unquote(url)
+
 
 def url_table(url):
     """Break down a url into a table of its component parts"""
