@@ -65,6 +65,10 @@ heatmap_kws_proportion = dict(
     vmin=0
 )
 
+# ==============================================================================
+# Plot Adjustments
+
+
 def remove_yaxis_ticks(ax, major=True, minor=True):
     if major:
         for tic in ax.yaxis.get_major_ticks():
@@ -74,6 +78,7 @@ def remove_yaxis_ticks(ax, major=True, minor=True):
         for tic in ax.yaxis.get_minor_ticks():
             tic.tick1line.set_visible(False)
             tic.tick2line.set_visible(False)
+
 
 def remove_xaxis_ticks(ax, major=True, minor=True):
     if major:
@@ -85,6 +90,42 @@ def remove_xaxis_ticks(ax, major=True, minor=True):
             tic.tick1line.set_visible(False)
             tic.tick2line.set_visible(False)
 
+
+def reorder_legend(handles=None, labels=None, order=None, unique=False):
+    """Reorder legend handles and labels with ordered list
+
+    Credit: @CPBL
+    https://stackoverflow.com/questions/22263807/how-is-order-of-items-in-matplotlib-legend-determined/35926913#35926913
+
+    Args:
+        handles (list): handles obtained via ax.get_legend_handles_labels()
+        labels (list): labels obtained via ax.get_legend_handles_labels()
+        order (list): list of labels in desired order, strings must match
+        unique (bool): option to drop duplicates and keep first label instance
+
+    Returns:
+        tuple: the sorted handles and labels objects
+    """
+
+    # Sort both labels and handles by labels
+    labels, handles = zip(*sorted(zip(labels, handles), key=lambda l: l[0]))
+    if order is not None:
+        # Sort according to a given list (not necessarily complete)
+        keys = dict(zip(order,range(len(order))))
+        labels, handles = zip(*sorted(zip(labels, handles), key=lambda l, 
+                                      keys=keys: keys.get(l[0], np.inf)))
+
+    # Keep only the first of each handle
+    if unique: 
+        labels, handles= zip(*unique_everseen(zip(labels,handles), key=labels))
+    return handles, labels
+
+
+def unique_everseen(seq, key=None):
+    seen = set()
+    seen_add = seen.add
+    return [x for x,k in zip(seq,key) if not (k in seen or seen_add(k))]
+ 
 
 def get_binning(values, num_bins = 15, log_binning = True, is_pmf = True):
 
