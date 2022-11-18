@@ -4,13 +4,26 @@
 from . import utils
 
 import os
-import pandas as pd
 import numpy as np
+import pandas as pd
+from functools import reduce
 
 def neat_n(n): return f'{n:,}'
 def neat_p(p): return f'{round(p*100, 1)}%' if pd.notnull(p) else '-'
 
-def dft(col, neat=True, dropna=True, sort_index=False):
+def dfshape(df):
+    """A cleaner version of df.shape
+
+    Args:
+        df (pd.DataFrame): A dataframe
+
+    Returns:
+        str: formatted dataframe shape "n_rows | n_cols" 
+    """
+    return ' | '.join([f"{s:,}" for s in df.shape])
+
+
+def dft(col, neat=True, dropna=True, sort_index=False, binned=False):
     """A descriptive frequencies table
     
     Arguments:
@@ -20,10 +33,15 @@ def dft(col, neat=True, dropna=True, sort_index=False):
         neat {bool} -- Format output (default: {True})
         dropna {bool} -- Drop null values (default: {True})
         sort_index {bool} -- Sort index of output (default: {False})
+        binned {bool} -- Count binned values, log10 (default: {False})
     
     Returns:
         pd.DataFrame -- A dataframe with descriptive frequencies
     """
+
+    if binned:
+        col = binned_col(col)
+
     tab = pd.DataFrame({
         'n': col.value_counts(dropna=dropna),
         'p': col.value_counts(normalize=True, dropna=dropna)
@@ -33,6 +51,7 @@ def dft(col, neat=True, dropna=True, sort_index=False):
         tab['n'] = tab['n'].apply(neat_n)
         tab['p'] = tab['p'].apply(neat_p)
     return tab
+
 
 def describe(series):
     """Enhanced describe, featuring sem, median, sum, and null count
@@ -92,6 +111,19 @@ def get_column_unique(fp, col):
     
     print(f"Unique [{fp}|{col}]: {len(data):,}")
     return data
+
+
+def join_dfs(df_list):
+    """Joins a list of pd.DataFrame objects"""
+    return reduce(lambda df_n,df_i: df_n.join(df_i), df_list)
+
+
+def binned_col(col, bins=[-0.1, 0, 1, 10, 100, 1000, 10000],
+               labels=['0', '1', '2-10','11-100','101-1000','1000+']):
+    """Get log-style binning of column by default"""
+    n_bins = pd.cut(col, bins=bins, include_lowest=True)
+    return n_bins
+
 
 # Descriptive Stats ------------------------------------------------------------
 
