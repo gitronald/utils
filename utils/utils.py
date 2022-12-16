@@ -4,6 +4,7 @@
 import os
 import re
 import bz2
+import sys
 import json
 import random
 import itertools
@@ -12,6 +13,13 @@ from hashlib import sha224
 from string import ascii_letters, digits
 
 from .timers import now
+
+# Shell ------------------------------------------------------------------------
+
+def in_notebook() -> bool:
+    """Returns `True` if running in IPython kernel else `False`"""
+    return 'ipykernel' in sys.modules
+
 
 # Files ------------------------------------------------------------------------
 
@@ -27,7 +35,24 @@ def all_paths(dir, absolute=False):
 
 # Data ------------------------------------------------------------------------
 
-def read_lines(fp, max_line=1e12, as_dataframe=False, filetype=''):
+def read_lines(fp: str, 
+               max_line: int = 1e12, 
+               as_dataframe: bool = False, 
+               filetype: str = ''):
+    """Read lines from file
+
+    Args:
+        fp (str): filepath
+        max_line (int, optional): Maximum lines to read in. Defaults to 1e12.
+        as_dataframe (bool, optional): Return as dataframe. Defaults to False.
+        filetype (str, optional): Select filetype ending. Automatic by default.
+
+    Raises:
+        ValueError: If filepath not found
+
+    Returns:
+        list/pd.DataFrame: The loaded list or dataframe
+    """
 
     if fp.endswith('.csv') or filetype == 'csv':
         return pd.read_csv(fp)
@@ -89,11 +114,10 @@ def write_sql_row(data, table, conn):
         conn -- A connection to a SQL database.
     """
     row = pd.DataFrame(data, index=[0])
-    row.to_sql(table, con=sql_conn, index=False, if_exists='append')
-    cursor = conn.cursor()
-    columns = ', '.join("`"+str(x).replace('/','_')+"`" for x in data.keys())
-    values = ', '.join("'"+str(x).replace('/','_')+"'" for x in data.values())
-
+    row.to_sql(table, con=conn, index=False, if_exists='append')
+    # cursor = conn.cursor()
+    # columns = ', '.join("`"+str(x).replace('/','_')+"`" for x in data.keys())
+    # values = ', '.join("'"+str(x).replace('/','_')+"'" for x in data.values())
 
 # Lists ------------------------------------------------------------------------
 
