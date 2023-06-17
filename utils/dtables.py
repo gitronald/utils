@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 from functools import reduce
 
-def neat_n(n): return f'{n:,}'
+def neat_n(n): return f'{n:,.0f}'
 def neat_p(p): return f'{round(p*100, 1)}%' if pd.notnull(p) else '-'
 
 def dfshape(df):
@@ -118,12 +118,19 @@ def join_dfs(df_list):
     return reduce(lambda df_n,df_i: df_n.join(df_i), df_list)
 
 
-def binned_col(col, bins=[-0.1, 0, 1, 10, 100, 1000, 10000],
+def binned_col(col, 
+               bins=[-0.1, 0, 1, 10, 100, 1000, 10000],
                labels=['0', '1', '2-10','11-100','101-1000','1000+']):
     """Get log-style binning of column by default"""
     n_bins = pd.cut(col, bins=bins, include_lowest=True)
     return n_bins
 
+
+def pivot_unique(df, index, columns, values, margins=True):
+    """Pivot table, returns nunique values by index and columns"""
+    out = df.pivot_table(index=index, columns=columns, values=values,
+                         aggfunc=lambda x: x.nunique(), margins=margins)
+    return out
 
 # Descriptive Stats ------------------------------------------------------------
 
