@@ -10,23 +10,38 @@ import matplotlib.pyplot as plt
 # ------------------------------------------------------------------------------
 # Plot Settings - Font Size
 
-TINY_SIZE = 6
-SMALL_SIZE = 8
-MEDIUM_SIZE = 10
-BIGGER_SIZE = 12
+def set_font_config():
+    """Set matplotlib fonts config for PDF publication"""
 
-font = {'family' : 'sans', # controls default text sizes
-        'weight' : 'regular',
-        'size'   : SMALL_SIZE}
-plt.rc('font', **font)
+    # Output fonts in pdf as text not shape
+    mpl.rcParams['pdf.fonttype'] = 42
+    mpl.rcParams['ps.fonttype'] = 42
 
-plt.rc('font', size=SMALL_SIZE)          
-plt.rc('axes', titlesize=MEDIUM_SIZE)    # fontsize of the axes title
-plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
-plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
-plt.rc('legend', fontsize=TINY_SIZE)    # legend fontsize
-plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+    TINY_SIZE = 6
+    SMALL_SIZE = 7
+    LARGE_SIZE = 8
+
+    font_settings = {
+        'font': {
+            'family': 'sans-serif',
+            'weight': 'regular',
+            'size': SMALL_SIZE,
+        },
+        'axes': {
+            'titlesize': SMALL_SIZE, # fontsize of the axis title
+            'labelsize': SMALL_SIZE, # fontsize of the x and y labels
+        },
+        'xtick': {'labelsize': TINY_SIZE},   # fontsize of the tick labels
+        'ytick': {'labelsize': TINY_SIZE},   # fontsize of the tick labels
+        'legend': {'fontsize': TINY_SIZE},   # legend fontsize
+        'figure': {'titlesize': LARGE_SIZE}  # fontsize of the figure title
+    }
+
+    # Set default font size and family
+    for name, settings in font_settings.items():
+        plt.rc(name, **settings)
+
+    sns.set_style("whitegrid")
 
 # ------------------------------------------------------------------------------
 # Plot Settings - Figure Formatting

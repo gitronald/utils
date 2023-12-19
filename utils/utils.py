@@ -78,8 +78,7 @@ def read_lines(fp: str,
             return pd.DataFrame(lines) if as_dataframe else lines
     
     else:
-        raise ValueError('Filepath not recognized')
-                
+        raise ValueError('Filepath not recognized')               
 
 def write_lines(iter_data, fp, fmode='a+', verbose=False):
     with open(fp, fmode) as outfile:

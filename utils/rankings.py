@@ -126,7 +126,7 @@ def get_bias_till(bias_scores, till_rank):
     bias_till = {}
     for idx, bias in enumerate(bias_scores[:till_rank]):
         rank = idx + 1
-        bias_till[rank] = sum(bias_scores[:rank])/rank
+        bias_till[rank] = sum(bias_scores[:rank]) / rank
     return bias_till
 
 
