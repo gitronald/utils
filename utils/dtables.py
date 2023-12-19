@@ -75,6 +75,10 @@ def describe(series):
     except TypeError:
         return tab
 
+def describe_multi(df, cols):
+    """Describe multiple columns"""
+    return df[cols].apply(describe).T.convert_dtypes()
+
 def dnum(df_col, rnd=3):
     if df_col.dtype in [int, float]:
         return df_col.describe().round(rnd).to_frame().T
@@ -132,6 +136,12 @@ def pivot_unique(df, index, columns, values, margins=True):
                          aggfunc=lambda x: x.nunique(), margins=margins)
     return out
 
+
+def get_top_label(df, cols):
+    """Get column name for cell with highest value in row"""
+    return df[cols].replace(0, np.nan).idxmax(axis=1)
+
+
 # Descriptive Stats ------------------------------------------------------------
 
 
@@ -154,23 +164,23 @@ def get_cumsum_tab(col):
     
     return df
 
-def groupby_value_counts(gdf, col, add_prefix=True, dropna=True):
+def groupby_value_counts(gb, col, prefix="n_", dropna=True, reset_index=True):
     """Get value counts for a column with a grouped DataFrame, e.g. by `serp_id`
     
     Args:
-        gdf (groupby): A dataframe grouped by a key
+        gb (pd.DataFrameGroupBy): The grouped DataFrame
         col (str): The column to get value counts for
-        add_prefix (bool): Whether to use "n_{factor}" for column names
+        prefix (str, optional): The prefix to add to the column names. Defaults to "n_".
         dropna (bool): Whether to drop nulls or not
+        reset_index (bool): Whether to reset the index or not
     
     Returns:
         pd.DataFrame : DataFrame with value counts as `f'n_{factor}'` columns, 
         where `factor` is each unique value in the selected column.
     """
-    count_df = gdf[col].value_counts(dropna=dropna).unstack()
-    colnames = [f"n_{c}" if add_prefix else c for c in count_df.columns]
-    count_df.columns = colnames
-    return count_df.fillna(0).astype(int).reset_index()
+    counts = gb[col].value_counts(dropna=dropna).unstack().fillna(0).astype(int)
+    counts.columns = [f"{prefix}_{c}" if prefix else c for c in counts]
+    return counts.reset_index() if reset_index else counts
 
 def get_masked_nunique(df, mask, unique):
     """ Get the number of unique values in a masked dataframe column
